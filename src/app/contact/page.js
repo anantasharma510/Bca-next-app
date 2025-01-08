@@ -1,13 +1,12 @@
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
-import SignIn from "./signin";
+import ContactForm from "./contact";
 
-
-export default function page(){
+export default function page (){
     return (
-        <div className="page">
-            <Navbar/>
-            <SignIn/>
+        <div>
+            <Navbar />
+          < ContactForm />  
           <Footer />
         </div>
     )

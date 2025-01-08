@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from "react";
+import Link from "next/link";
 
 const Navbar = () => {
   const [isNoticesOpen, setIsNoticesOpen] = useState(false);
@@ -8,20 +9,20 @@ const Navbar = () => {
 
   const toggleNotices = () => {
     setIsNoticesOpen(!isNoticesOpen);
-    setIsAcademicsOpen(false);  // Close Academics dropdown
-    setIsTeamOpen(false);       // Close Team dropdown
+    setIsAcademicsOpen(false); // Close Academics dropdown
+    setIsTeamOpen(false);      // Close Team dropdown
   };
 
   const toggleAcademics = () => {
     setIsAcademicsOpen(!isAcademicsOpen);
-    setIsNoticesOpen(false);    // Close Notices dropdown
-    setIsTeamOpen(false);       // Close Team dropdown
+    setIsNoticesOpen(false);   // Close Notices dropdown
+    setIsTeamOpen(false);      // Close Team dropdown
   };
 
   const toggleTeam = () => {
     setIsTeamOpen(!isTeamOpen);
-    setIsNoticesOpen(false);    // Close Notices dropdown
-    setIsAcademicsOpen(false);  // Close Academics dropdown
+    setIsNoticesOpen(false);   // Close Notices dropdown
+    setIsAcademicsOpen(false); // Close Academics dropdown
   };
 
   return (
@@ -29,17 +30,20 @@ const Navbar = () => {
       <div className="flex justify-between items-center">
         {/* Logo */}
         <div className="text-blue-600 text-lg font-semibold">
-  <a href="#" onClick={() => window.location.reload()}>
-    Association of BCA Students
-  </a>
-</div>
- 
+          <Link href="/">
+            Association of BCA Students
+          </Link>
+        </div>
 
         {/* Navigation Links */}
         <div className="hidden md:flex items-center space-x-8">
-          <a href="/aboutus" className="text-gray-700 hover:text-blue-600">
+          <Link href="/" className="text-gray-700 hover:text-blue-600">
+            Home
+          </Link>
+
+          <Link href="/aboutus" className="text-gray-700 hover:text-blue-600">
             About Us
-          </a>
+          </Link>
 
           {/* Notices & Events Dropdown */}
           <div className="relative">
@@ -51,12 +55,12 @@ const Navbar = () => {
             </button>
             {isNoticesOpen && (
               <div className="absolute left-0 mt-2 bg-white shadow-lg rounded-md w-40 z-50">
-                <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                <Link href="/noticeboard" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                   Notice Board
-                </a>
-                <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                </Link>
+                <Link href="/events" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                   Upcoming Events
-                </a>
+                </Link>
               </div>
             )}
           </div>
@@ -71,12 +75,12 @@ const Navbar = () => {
             </button>
             {isTeamOpen && (
               <div className="absolute left-0 mt-2 bg-white shadow-lg rounded-md w-40 z-50">
-                <a href="/team" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                <Link href="/team" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                   Association of BCA Students
-                </a>
-                <a href="/triteam" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                </Link>
+                <Link href="/triteam" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                   Tech Research and Innovations
-                </a>
+                </Link>
               </div>
             )}
           </div>
@@ -91,36 +95,36 @@ const Navbar = () => {
             </button>
             {isAcademicsOpen && (
               <div className="absolute left-0 mt-2 bg-white shadow-lg rounded-md w-40 z-50">
-                <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                <Link href="/syllabus" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                   Syllabus
-                </a>
-                <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                </Link>
+                <Link href="/resources" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                   Resources
-                </a>
+                </Link>
               </div>
             )}
           </div>
 
-          <a href="#" className="text-gray-700 hover:text-blue-600">
+          <Link href="/blogs" className="text-gray-700 hover:text-blue-600">
             Blogs
-          </a>
+          </Link>
         </div>
 
         {/* Buttons: Contact Us and Sign In */}
         <div className="flex items-center space-x-4">
-          <a
-            href="#"
+          <Link
+            href="/contact"
             className="text-white bg-blue-600 px-4 py-2 rounded-full shadow-md hover:bg-blue-700 flex items-center"
           >
             Contact Us
             <span className="ml-2">↗</span>
-          </a>
-          <a
-            href="#"
+          </Link>
+          <Link
+            href="/signin"
             className="text-blue-600 border border-blue-600 px-4 py-2 rounded-full hover:bg-blue-100 flex items-center"
           >
             Sign In
-          </a>
+          </Link>
         </div>
       </div>
     </nav>
