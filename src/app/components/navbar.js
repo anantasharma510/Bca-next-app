@@ -108,6 +108,9 @@ const Navbar = () => {
           <Link href="/blogs" className="text-gray-700 hover:text-blue-600">
             Blogs
           </Link>
+          <Link href="/Membership" className="text-gray-700 hover:text-blue-600">
+              Membership
+          </Link>
         </div>
 
         {/* Buttons: Contact Us and Sign In */}

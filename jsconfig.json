@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": ".", 
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"],
+      "@db": ["utils/db.js"]  // Alias for db.js in the util folder
     }
   }
 }
