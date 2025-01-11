@@ -1,5 +1,11 @@
+// import CreateEventPage from "./events/events";
 import AdminPanel from "./AdminPanel";
 
 export default function Admin() {
-  return <AdminPanel />;
+  return (
+    <div>
+  <AdminPanel />
+   {/* <CreateEventPage /> */}
+  </div>)
+  ;
 }

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Navbar from "../components/navbar";
+import Footer from "../components/footer";
 
 export default function NoticesPage() {
   const [notices, setNotices] = useState([]);
@@ -29,25 +31,45 @@ export default function NoticesPage() {
   };
 
   return (
-    <div>
-      <h1>Notices</h1>
-      <ul>
-        {notices.map((notice) => (
-          <li key={notice._id}>
-            <h2>{notice.title}</h2>
-            <p>{notice.content}</p>
-          </li>
-        ))}
-      </ul>
-      <div>
-        <button onClick={handlePrevPage} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <span>Page {currentPage} of {totalPages}</span>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Next
-        </button>
-      </div>
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+
+      <main className="flex-grow container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold text-center mb-8">Notices</h1>
+
+        <ul className="space-y-6">
+          {notices.map((notice) => (
+            <li key={notice._id} className="border p-6 rounded-lg shadow-md bg-white">
+              <h2 className="text-xl font-semibold mb-2">{notice.title}</h2>
+              <p className="text-gray-700">{notice.content}</p>
+            </li>
+          ))}
+        </ul>
+
+        <div className="flex justify-between items-center mt-8">
+          <button
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-blue-500 text-white font-semibold rounded disabled:bg-gray-300 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+
+          <span className="text-gray-700">
+            Page {currentPage} of {totalPages}
+          </span>
+
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-blue-500 text-white font-semibold rounded disabled:bg-gray-300 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
+      </main>
+
+      <Footer />
     </div>
   );
 }
