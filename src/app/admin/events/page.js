@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useState } from 'react';
 
 const EventForm = () => {
@@ -16,16 +16,25 @@ const EventForm = () => {
     
     // If an image is selected, convert it to a base64 string
     let imageBase64 = null;
+
+    // If eventPicture is selected, convert it to base64
     if (eventPicture) {
-      const reader = new FileReader();
-      reader.readAsDataURL(eventPicture);
-      reader.onloadend = async () => {
-        imageBase64 = reader.result.split(',')[1]; // Remove the base64 prefix
-        await sendData(imageBase64);
-      };
-    } else {
-      await sendData(imageBase64);
+      imageBase64 = await convertImageToBase64(eventPicture);
     }
+
+    await sendData(imageBase64);
+  };
+
+  // Convert image to base64 using FileReader
+  const convertImageToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        resolve(reader.result.split(',')[1]); // Remove the base64 prefix
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   };
 
   // Send data to the API

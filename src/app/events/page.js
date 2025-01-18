@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useState, useEffect } from 'react';
 
 const EventList = () => {
@@ -47,6 +47,7 @@ const EventList = () => {
               alt={event.title}
               className="w-full h-48 object-cover"
             />
+            {console.log(event.eventPicture)} {/* Debug the image URL */}
             <div className="p-4">
               <h3 className="text-xl font-bold text-gray-800">{event.title}</h3>
               <p className="text-gray-600 text-sm mt-2">{event.description}</p>
