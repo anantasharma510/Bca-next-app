@@ -13,47 +13,24 @@ const EventForm = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // If an image is selected, convert it to a base64 string
-    let imageBase64 = null;
-
-    // If eventPicture is selected, convert it to base64
-    if (eventPicture) {
-      imageBase64 = await convertImageToBase64(eventPicture);
-    }
-
-    await sendData(imageBase64);
-  };
-
-  // Convert image to base64 using FileReader
-  const convertImageToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        resolve(reader.result.split(',')[1]); // Remove the base64 prefix
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+    await sendData();
   };
 
   // Send data to the API
-  const sendData = async (imageBase64) => {
-    const eventData = {
-      title,
-      description,
-      eventDate,
-      location,
-      eventPicture: imageBase64, // Send base64 image data as string
-    };
+  const sendData = async () => {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('eventDate', eventDate);
+    formData.append('location', location);
+    if (eventPicture) {
+      formData.append('eventPicture', eventPicture); // Append the file
+    }
 
     try {
       const res = await fetch('/api/events', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(eventData),
+        body: formData, // Send FormData directly
       });
 
       const data = await res.json();

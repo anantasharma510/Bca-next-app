@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import BlogsList from "./delete";
+import Sidebar from "@/app/dashboard/main";
 
 export default function AddBlogPage() {
   const [formData, setFormData] = useState({
@@ -65,7 +66,10 @@ export default function AddBlogPage() {
   };
 
   return (
+    <div>
+       <Sidebar />
     <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+        
       <h1>Add a New Blog</h1>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: "10px" }}>
@@ -147,6 +151,7 @@ export default function AddBlogPage() {
 
       {error && <p style={{ color: "red" }}>{error}</p>}
       <BlogsList />
+      </div>
     </div>
   );
 }

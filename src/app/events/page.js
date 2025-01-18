@@ -1,5 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Navbar from '../components/navbar';
+import Footer from '../components/footer';
 
 const EventList = () => {
   const [events, setEvents] = useState([]);
@@ -12,9 +14,13 @@ const EventList = () => {
       try {
         const res = await fetch('/api/events');
         const data = await res.json();
-        
+
         if (res.status === 200) {
-          setEvents(data);
+          // Sort events by date (newest first)
+          const sortedEvents = data.sort(
+            (a, b) => new Date(b.eventDate) - new Date(a.eventDate)
+          );
+          setEvents(sortedEvents);
         } else {
           setError('Failed to fetch events');
         }
@@ -37,6 +43,8 @@ const EventList = () => {
   }
 
   return (
+    <div>
+      <Navbar />
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold text-center mb-6">Upcoming Events</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -47,7 +55,6 @@ const EventList = () => {
               alt={event.title}
               className="w-full h-48 object-cover"
             />
-            {console.log(event.eventPicture)} {/* Debug the image URL */}
             <div className="p-4">
               <h3 className="text-xl font-bold text-gray-800">{event.title}</h3>
               <p className="text-gray-600 text-sm mt-2">{event.description}</p>
@@ -57,6 +64,8 @@ const EventList = () => {
           </div>
         ))}
       </div>
+    </div>
+    <Footer />
     </div>
   );
 };
