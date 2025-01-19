@@ -11,7 +11,7 @@ const Teams = () => {
     {
       name: "Monika Shrestha",
       role: "Secretary",
-      imgurl: "https://i.ibb.co/68hhrrM/Screenshot-2024-05-16-190550.png",
+      imgurl: "",
     },
     {
       name: "Bishal Subedi",
@@ -26,7 +26,7 @@ const Teams = () => {
     {
       name: "Binita Lamsal",
       role: "Joint Treasurer",
-      imgurl: "https://randomuser.me/api/portraits/women/13.jpg",
+      imgurl: "",
     },
     {
       name: "Amit KC",
