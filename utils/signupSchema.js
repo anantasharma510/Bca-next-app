@@ -1,31 +1,33 @@
 // utils/signupSchema.js
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const SignupSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    match: [/.+\@.+\..+/, 'Please enter a valid email address'],
-  },
-  phone: {
-    type: String,
-    required: true,
-  },
-  photo: {
-    type: String, // URL or path to the photo
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6,
-  },
-}, { timestamps: true });
+const SignupSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      match: [/.+\@.+\..+/, "Please enter a valid email address"],
+    },
+    phone: {
+      type: String,
+    },
+    photo: {
+      type: String, // URL or path to the photo
+    },
+    password: {
+      type: String,
 
-const Signup = mongoose.models.Signup || mongoose.model('Signup', SignupSchema);
+      minlength: 6,
+    },
+  },
+  { timestamps: true },
+);
+
+const Signup = mongoose.models.Signup || mongoose.model("Signup", SignupSchema);
 
 export default Signup;

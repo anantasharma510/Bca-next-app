@@ -1,11 +1,11 @@
-import { connectToDatabase } from "../../../../utils/db"
+import { connectToDatabase } from "../../../../utils/db";
 import Notice from "../../../../utils/schema";
 
 // GET request to fetch a specific notice by ID
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
-    const { id } = searchParams;  // Extract the ID from the URL
+    const { id } = searchParams; // Extract the ID from the URL
 
     // Connect to the database
     await connectToDatabase();
@@ -28,7 +28,7 @@ export async function GET(req) {
 export async function PUT(req) {
   try {
     const { searchParams } = new URL(req.url);
-    const { id } = searchParams;  // Extract the ID from the URL
+    const { id } = searchParams; // Extract the ID from the URL
     const { title, content } = await req.json();
 
     // Connect to the database
@@ -38,7 +38,7 @@ export async function PUT(req) {
     const updatedNotice = await Notice.findByIdAndUpdate(
       id,
       { title, content },
-      { new: true }  // Return the updated notice
+      { new: true }, // Return the updated notice
     );
 
     if (!updatedNotice) {
@@ -56,7 +56,7 @@ export async function PUT(req) {
 export async function DELETE(req) {
   try {
     const { searchParams } = new URL(req.url);
-    const { id } = searchParams;  // Extract the ID from the URL
+    const { id } = searchParams; // Extract the ID from the URL
 
     // Connect to the database
     await connectToDatabase();
