@@ -1,5 +1,5 @@
-import { connectToDatabase } from "../../../../utils/db";
-import Notice from "../../../../utils/schema";
+import { connectToDatabase } from "../../../../../utils/db";
+import Notice from "../../../../../utils/schema";
 
 // GET request to fetch a specific notice by ID
 export async function GET(req) {
