@@ -5,7 +5,7 @@ import Notice from "../../../../../utils/schema";
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
-    const { id } = searchParams; // Extract the ID from the URL
+    const id = searchParams.get("id"); // Extract the ID from the URL
 
     // Connect to the database
     await connectToDatabase();
@@ -28,18 +28,37 @@ export async function GET(req) {
 export async function PUT(req) {
   try {
     const { searchParams } = new URL(req.url);
-    const { id } = searchParams; // Extract the ID from the URL
-    const { title, content } = await req.json();
+    const id = searchParams.get("id"); // Extract the ID from the URL
+    const formData = await req.formData();
+    const title = formData.get("title");
+    const content = formData.get("content");
+    const file = formData.get("file"); // Handle file attachment
+    const image = formData.get("image"); // Handle image attachment
 
     // Connect to the database
     await connectToDatabase();
 
+    const updatedData = {
+      title,
+      content,
+    };
+
+    // Handle file upload
+    if (file) {
+      updatedData.file = `/uploads/files/${file.name}`;
+      const fileBuffer = await file.arrayBuffer();
+      // Save fileBuffer to the desired location on the server (e.g., using fs or a cloud service)
+    }
+
+    // Handle image upload
+    if (image) {
+      updatedData.image = `/uploads/images/${image.name}`;
+      const imageBuffer = await image.arrayBuffer();
+      // Save imageBuffer to the desired location on the server
+    }
+
     // Find and update the notice
-    const updatedNotice = await Notice.findByIdAndUpdate(
-      id,
-      { title, content },
-      { new: true }, // Return the updated notice
-    );
+    const updatedNotice = await Notice.findByIdAndUpdate(id, updatedData, { new: true });
 
     if (!updatedNotice) {
       return new Response("Notice not found.", { status: 404 });
@@ -56,7 +75,7 @@ export async function PUT(req) {
 export async function DELETE(req) {
   try {
     const { searchParams } = new URL(req.url);
-    const { id } = searchParams; // Extract the ID from the URL
+    const id = searchParams.get("id"); // Extract the ID from the URL
 
     // Connect to the database
     await connectToDatabase();
@@ -66,6 +85,16 @@ export async function DELETE(req) {
 
     if (!deletedNotice) {
       return new Response("Notice not found.", { status: 404 });
+    }
+
+    // Optionally, delete associated files and images from the server
+    if (deletedNotice.file) {
+      // Delete the file from the server
+      // Example: fs.unlinkSync(path.join(__dirname, '/uploads/files', deletedNotice.file));
+    }
+    if (deletedNotice.image) {
+      // Delete the image from the server
+      // Example: fs.unlinkSync(path.join(__dirname, '/uploads/images', deletedNotice.image));
     }
 
     return new Response("Notice deleted successfully.", { status: 200 });

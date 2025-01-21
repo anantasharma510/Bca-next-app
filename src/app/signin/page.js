@@ -34,7 +34,7 @@ const SignInPage = () => {
       console.error(res.error); // Handle error (e.g., show message to the user)
     } else {
       // Redirect to protected page (admin panel) after successful login
-      router.push("/admin");
+      // router.push("");
     }
   };
 

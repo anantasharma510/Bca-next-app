@@ -1,25 +1,34 @@
-'use client';
+"use client";
 import { useState } from "react";
 
 const AdminPanel = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [file, setFile] = useState(null);
+  const [image, setImage] = useState(null);
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    if (file) formData.append("file", file);
+    if (image) formData.append("image", image);
+
     try {
       const res = await fetch("/api/notices", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, content }),
+        body: formData,
       });
 
       if (res.ok) {
         setMessage("Notice created successfully!");
         setTitle("");
         setContent("");
+        setFile(null);
+        setImage(null);
       } else {
         setMessage("Failed to create notice.");
       }
@@ -32,9 +41,11 @@ const AdminPanel = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
       <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-md">
-        <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">Admin Panel - Create Notice</h1>
+        <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">
+          Admin Panel - Create Notice
+        </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
           <div>
             <label className="block text-sm font-medium text-gray-700">Title:</label>
             <input
@@ -46,7 +57,7 @@ const AdminPanel = () => {
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700">Content:</label>
             <textarea
@@ -57,6 +68,26 @@ const AdminPanel = () => {
               rows="4"
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             ></textarea>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Attach File (PDF or others):</label>
+            <input
+              type="file"
+              onChange={(e) => setFile(e.target.files[0])}
+              accept=".pdf,.doc,.docx,.xls,.xlsx"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Upload Image:</label>
+            <input
+              type="file"
+              onChange={(e) => setImage(e.target.files[0])}
+              accept="image/*"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
 
           <button

@@ -49,6 +49,156 @@ export const syllabusData = [
         },
       ],
     },
+    {
+      semester: 3,
+      subjects: [
+        {
+          name: "Mathematics II",
+          pdfUrl: "/pdfs/semester2/mathematics2.pdf",
+        },
+        {
+          name: "Data Structures",
+          pdfUrl: "/pdfs/semester2/data_structures.pdf",
+        },
+        {
+          name: "Object-Oriented Programming",
+          pdfUrl: "/pdfs/semester2/object_oriented_programming.pdf",
+        },
+        {
+          name: "Basic Electrical Engineering",
+          pdfUrl: "/pdfs/semester2/basic_electrical_engineering.pdf",
+        },
+        {
+          name: "Environmental Studies",
+          pdfUrl: "/pdfs/semester2/environmental_studies.pdf",
+        },
+      ],
+    },
+    {
+      semester: 4,
+      subjects: [
+        {
+          name: "Mathematics II",
+          pdfUrl: "/pdfs/semester2/mathematics2.pdf",
+        },
+        {
+          name: "Data Structures",
+          pdfUrl: "/pdfs/semester2/data_structures.pdf",
+        },
+        {
+          name: "Object-Oriented Programming",
+          pdfUrl: "/pdfs/semester2/object_oriented_programming.pdf",
+        },
+        {
+          name: "Basic Electrical Engineering",
+          pdfUrl: "/pdfs/semester2/basic_electrical_engineering.pdf",
+        },
+        {
+          name: "Environmental Studies",
+          pdfUrl: "/pdfs/semester2/environmental_studies.pdf",
+        },
+      ],
+    },
+    {
+      semester: 5,
+      subjects: [
+        {
+          name: "Mathematics II",
+          pdfUrl: "/pdfs/semester2/mathematics2.pdf",
+        },
+        {
+          name: "Data Structures",
+          pdfUrl: "/pdfs/semester2/data_structures.pdf",
+        },
+        {
+          name: "Object-Oriented Programming",
+          pdfUrl: "/pdfs/semester2/object_oriented_programming.pdf",
+        },
+        {
+          name: "Basic Electrical Engineering",
+          pdfUrl: "/pdfs/semester2/basic_electrical_engineering.pdf",
+        },
+        {
+          name: "Environmental Studies",
+          pdfUrl: "/pdfs/semester2/environmental_studies.pdf",
+        },
+      ],
+    },
+    {
+      semester: 6,
+      subjects: [
+        {
+          name: "Mathematics II",
+          pdfUrl: "/pdfs/semester2/mathematics2.pdf",
+        },
+        {
+          name: "Data Structures",
+          pdfUrl: "/pdfs/semester2/data_structures.pdf",
+        },
+        {
+          name: "Object-Oriented Programming",
+          pdfUrl: "/pdfs/semester2/object_oriented_programming.pdf",
+        },
+        {
+          name: "Basic Electrical Engineering",
+          pdfUrl: "/pdfs/semester2/basic_electrical_engineering.pdf",
+        },
+        {
+          name: "Environmental Studies",
+          pdfUrl: "/pdfs/semester2/environmental_studies.pdf",
+        },
+      ],
+    },
+    {
+      semester: 7,
+      subjects: [
+        {
+          name: "Mathematics II",
+          pdfUrl: "/pdfs/semester2/mathematics2.pdf",
+        },
+        {
+          name: "Data Structures",
+          pdfUrl: "/pdfs/semester2/data_structures.pdf",
+        },  
+        {
+          name: "Object-Oriented Programming",
+          pdfUrl: "/pdfs/semester2/object_oriented_programming.pdf",
+        },
+        {
+          name: "Basic Electrical Engineering",
+          pdfUrl: "/pdfs/semester2/basic_electrical_engineering.pdf",
+        },
+        {
+          name: "Environmental Studies",
+          pdfUrl: "/pdfs/semester2/environmental_studies.pdf",
+        },
+      ],
+    },
+    {
+      semester: 8,
+      subjects: [
+        {
+          name: "Mathematics II",
+          pdfUrl: "/pdfs/semester2/mathematics2.pdf",
+        },
+        {
+          name: "Data Structures",
+          pdfUrl: "/pdfs/semester2/data_structures.pdf",
+        },
+        {
+          name: "Object-Oriented Programming",
+          pdfUrl: "/pdfs/semester2/object_oriented_programming.pdf",
+        },
+        {
+          name: "Basic Electrical Engineering",
+          pdfUrl: "/pdfs/semester2/basic_electrical_engineering.pdf",
+        },
+        {
+          name: "Environmental Studies",
+          pdfUrl: "/pdfs/semester2/environmental_studies.pdf",
+        },
+      ],
+    },
     // Add other semesters similarly...
   ];
   

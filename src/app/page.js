@@ -9,8 +9,7 @@ export default function Home() {
    <div>
     <Navbar />
   <HomePageSection />
-  <ThreeSlider />
-  <Footer />
+
    </div>
   );
 }
