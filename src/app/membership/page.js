@@ -1,106 +1,79 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
-import Navbar from '../components/navbar';
-import Footer from '../components/footer';
+import { useState } from "react";
+import axios from "axios";
+import Navbar from "../components/navbar";
+import Footer from "../components/footer";
+import { Check } from "lucide-react";
 
 export default function BCAMembership() {
   const [userData, setUserData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
+    fullName: "",
+    email: "",
+    phone: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const membership = {
-    title: 'BCA Student Membership',
-    price: 500, // Price in NPR
-    description: 'Join the British Columbia Association and unlock a world of opportunities.',
+    title: "BCA Student Membership",
+    price: 20, // Price in NPR
+    description: "Join the British Columbia Association and unlock a world of opportunities.",
     benefits: [
-      'Access to exclusive online resources',
-      'Monthly industry newsletters',
-      'Networking events and webinars',
-      'Career counseling and job board access',
-      'Discounts on BCA conferences and workshops',
+      "Access to exclusive online resources",
+      "Monthly industry newsletters",
+      "Networking events and webinars",
+      "Career counseling and job board access",
+      "Discounts on BCA conferences and workshops",
     ],
   };
 
-  useEffect(() => {
-    const loadKhaltiScript = () => {
-      const script = document.createElement('script');
-      script.src = 'https://khalti.com/static/khalti-checkout.js';
-      script.async = true;
-      document.body.appendChild(script);
-    };
-    loadKhaltiScript();
-  }, []);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUserData((prevData) => ({ ...prevData, [name]: value }));
+  const handleChange = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
-  const handleKhaltiPayment = () => {
-    const { fullName, email, phone } = userData;
+  const generateOrderId = () => {
+    return `Order-${Date.now()}`; // Unique order ID based on timestamp
+  };
 
-    if (!fullName || !email || !phone) {
-      alert('Please fill in all the fields.');
+  const handlePayment = async () => {
+    if (!userData.fullName || !userData.email || !userData.phone) {
+      setError("All fields are required.");
       return;
     }
 
-    const config = {
-      publicKey: process.env.NEXT_PUBLIC_KHALTI_PUBLIC_KEY,
-      productIdentity: 'BCA_Membership',
-      productName: membership.title,
-      productUrl: window.location.href,
-      amount: membership.price * 100, // Amount in paisa
-      eventHandler: {
-        async onSuccess(payload) {
-          console.log('Payment successful:', payload);
+    setLoading(true);
+    setError("");
 
-          const paymentData = {
-            fullName,
-            email,
-            phone,
-            amount: membership.price * 100,
-            khaltiToken: payload.token,
-            membershipType: membership.title,
-          };
-
-          try {
-            const response = await fetch('/api/membership', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(paymentData),
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-              alert('Payment successful! Transaction ID: ' + result.transactionId);
-            } else {
-              alert('Payment verification failed. Please contact support.');
-            }
-          } catch (error) {
-            console.error('Error processing payment:', error);
-            alert('Something went wrong. Please try again later.');
-          }
-        },
-        onError(error) {
-          console.error('Payment error:', error);
-          alert('Payment failed! Please try again.');
-        },
-        onClose() {
-          console.log('Payment widget closed');
-        },
-      },
+    const customerInfo = {
+      name: userData.fullName,
+      email: userData.email,
+      phone: userData.phone,
     };
 
-    const checkout = new window.KhaltiCheckout(config);
-    checkout.show({ amount: membership.price * 100 });
+    const payload = {
+      amount: membership.price,
+      purchaseOrderId: generateOrderId(),
+      purchaseOrderName: membership.title,
+      customerInfo,
+    };
+
+    try {
+      const response = await axios.post("/api/membership", payload);
+      const { payment_url } = response.data;
+
+      if (payment_url) {
+        window.location.href = payment_url; // Redirect to Khalti payment page
+      } else {
+        setError("Failed to retrieve payment URL.");
+      }
+    } catch (error) {
+      setError("Payment initiation failed. Please try again.");
+      console.error("Payment Error:", error.response?.data || error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -118,6 +91,34 @@ export default function BCAMembership() {
               <span className="text-5xl font-bold text-gray-900">₹{membership.price}</span>
               <span className="text-xl text-gray-600">/year</span>
             </div>
+
+            <div className="space-y-4">
+              <input
+                type="text"
+                name="fullName"
+                placeholder="Full Name"
+                value={userData.fullName}
+                onChange={handleChange}
+                className="w-full p-2 border rounded-md"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={userData.email}
+                onChange={handleChange}
+                className="w-full p-2 border rounded-md"
+              />
+              <input
+                type="text"
+                name="phone"
+                placeholder="Phone Number"
+                value={userData.phone}
+                onChange={handleChange}
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+
             <ul className="space-y-3">
               {membership.benefits.map((benefit, index) => (
                 <li key={index} className="flex items-center">
@@ -126,44 +127,18 @@ export default function BCAMembership() {
                 </li>
               ))}
             </ul>
-
-            <div className="space-y-4">
-              <input
-                type="text"
-                name="fullName"
-                value={userData.fullName}
-                onChange={handleInputChange}
-                placeholder="Full Name"
-                className="w-full px-4 py-2 border rounded-lg"
-              />
-              <input
-                type="email"
-                name="email"
-                value={userData.email}
-                onChange={handleInputChange}
-                placeholder="Email"
-                className="w-full px-4 py-2 border rounded-lg"
-              />
-              <input
-                type="tel"
-                name="phone"
-                value={userData.phone}
-                onChange={handleInputChange}
-                placeholder="Phone Number"
-                className="w-full px-4 py-2 border rounded-lg"
-              />
-            </div>
           </div>
 
+          {error && <p className="text-red-500 text-center p-2">{error}</p>}
+
           <div className="p-4 border-t flex justify-center">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <button
-                onClick={handleKhaltiPayment}
-                className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-600 transition duration-300"
-              >
-                Pay with Khalti
-              </button>
-            </motion.div>
+            <button
+              onClick={handlePayment}
+              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-600 transition duration-300"
+              disabled={loading}
+            >
+              {loading ? "Processing..." : "Pay with Khalti"}
+            </button>
           </div>
         </div>
       </div>

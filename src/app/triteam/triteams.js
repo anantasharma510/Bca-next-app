@@ -3,34 +3,34 @@ import React from "react";
 const TechResearchInnovation = () => {
   const techTeam = [
     {
-      name: "Ankit Sharma",
-      role: "Team Lead",
-      imgurl: "https://randomuser.me/api/portraits/men/20.jpg",
+      name: "Ananta Sharma",
+      role: "President",
+      imgurl: "https://lh3.googleusercontent.com/a/ACg8ocLUFKeNkoZjY4WoABPxIx6Qerognk2aPd-DX1daO39R89c3oBS2=s96-c",
     },
     {
-      name: "Priya Kharel",
+      name: "Echhya Bhattrai",
       role: "Software Developer",
       imgurl: "https://randomuser.me/api/portraits/women/40.jpg",
     },
     {
-      name: "Rohan Das",
+      name: "Om parsad poudel",
       role: "AI Specialist",
       imgurl: "https://randomuser.me/api/portraits/men/35.jpg",
     },
     {
-      name: "Sneha Thapa",
+      name: "Darshana Aryal",
       role: "Data Analyst",
       imgurl: "https://randomuser.me/api/portraits/women/45.jpg",
     },
     {
-      name: "Vikas Joshi",
+      name: "Samarpan kc",
       role: "Cloud Engineer",
       imgurl: "https://randomuser.me/api/portraits/men/50.jpg",
     },
     {
-      name: "Meena Karki",
+      name: "Kisor sharma subedi",
       role: "Cybersecurity Expert",
-      imgurl: "https://randomuser.me/api/portraits/women/30.jpg",
+      imgurl: "https://i.pinimg.com/originals/fa/de/85/fade857bca64ba9f4dc017d59a9c6e7c.jpg",
     },
   ];
 

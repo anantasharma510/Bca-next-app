@@ -1,80 +1,148 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import axios from "axios";
+import Navbar from "../components/navbar";
+import Footer from "../components/footer";
+import { Check } from "lucide-react";
 
-export default function BlogsPage() {
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
+export default function BCAMembership() {
+  const [userData, setUserData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+  });
 
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const response = await fetch("/api/blogs");
-        if (!response.ok) {
-          throw new Error("Failed to fetch blogs");
-        }
-        const data = await response.json();
-        setBlogs(data);
-      } catch (error) {
-        console.error("Error fetching blogs:", error);
-      } finally {
-        setLoading(false);
-      }
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const membership = {
+    title: "BCA Student Membership",
+    price: 20, // Updated Price in NPR
+    description: "Join the British Columbia Association and unlock a world of opportunities.",
+    benefits: [
+      "Access to exclusive online resources",
+      "Monthly industry newsletters",
+      "Networking events and webinars",
+      "Career counseling and job board access",
+      "Discounts on BCA conferences and workshops",
+    ],
+  };
+
+  const handleChange = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
+
+  const generateOrderId = () => {
+    return `Order-${Date.now()}`; // Unique order ID based on timestamp
+  };
+
+  const handlePayment = async () => {
+    if (!userData.fullName || !userData.email || !userData.phone) {
+      setError("All fields are required.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    const customerInfo = {
+      name: userData.fullName,
+      email: userData.email,
+      phone: userData.phone,
     };
 
-    fetchBlogs();
-  }, []);
+    const payload = {
+      amount: membership.price,
+      purchaseOrderId: generateOrderId(),
+      purchaseOrderName: membership.title,
+      customerInfo,
+    };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <p className="text-lg font-semibold text-gray-700">Loading...</p>
-      </div>
-    );
-  }
+    try {
+      const response = await axios.post("/api/membership", payload);
+      const { payment_url } = response.data;
+
+      if (payment_url) {
+        window.location.href = payment_url; // Redirect to Khalti payment page
+      } else {
+        setError("Failed to retrieve payment URL.");
+      }
+    } catch (error) {
+      setError("Payment initiation failed. Please try again.");
+      console.error("Payment Error:", error.response?.data || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="bg-gray-100 min-h-screen p-4">
-      <div className="container mx-auto">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
-          Blogs
-        </h1>
-        {blogs.length === 0 ? (
-          <p className="text-center text-gray-600">No blogs available.</p>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {blogs.map((blog) => (
-              <div
-                key={blog._id}
-                className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => router.push(`/blogs/${blog._id}`)} // Navigate to /blogs/[id]
-              >
-                {blog.imageUrl && (
-                  <img
-                    src={blog.imageUrl}
-                    alt={blog.title}
-                    className="w-full h-48 object-cover"
-                  />
-                )}
-                <div className="p-4">
-                  <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                    {blog.title}
-                  </h2>
-                  <p className="text-gray-600 mb-4">{blog.subtitle}</p>
-                  <p className="text-gray-700 text-sm mb-4">
-                    {blog.content.slice(0, 100)}...
-                  </p>
-                  <small className="block text-gray-500">
-                    Author: {blog.author}
-                  </small>
-                </div>
-              </div>
-            ))}
+    <div>
+      <Navbar />
+      <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+        <div className="w-full max-w-2xl border rounded-lg shadow-lg overflow-hidden">
+          <div className="p-4 border-b">
+            <h2 className="text-3xl font-extrabold text-center text-gray-900">{membership.title}</h2>
+            <p className="text-center text-gray-600 mt-2">{membership.description}</p>
           </div>
-        )}
+
+          <div className="p-4 space-y-6">
+            <div className="text-center">
+              <span className="text-5xl font-bold text-gray-900">₹{membership.price}</span>
+              <span className="text-xl text-gray-600">/year</span>
+            </div>
+
+            <div className="space-y-4">
+              <input
+                type="text"
+                name="fullName"
+                placeholder="Full Name"
+                value={userData.fullName}
+                onChange={handleChange}
+                className="w-full p-2 border rounded-md"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={userData.email}
+                onChange={handleChange}
+                className="w-full p-2 border rounded-md"
+              />
+              <input
+                type="text"
+                name="phone"
+                placeholder="Phone Number"
+                value={userData.phone}
+                onChange={handleChange}
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+
+            <ul className="space-y-3">
+              {membership.benefits.map((benefit, index) => (
+                <li key={index} className="flex items-center">
+                  <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                  <span className="text-gray-700">{benefit}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {error && <p className="text-red-500 text-center p-2">{error}</p>}
+
+          <div className="p-4 border-t flex justify-center">
+            <button
+              onClick={handlePayment}
+              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-600 transition duration-300"
+              disabled={loading}
+            >
+              {loading ? "Processing..." : "Pay with Khalti"}
+            </button>
+          </div>
+        </div>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -1,47 +1,26 @@
 import mongoose from "mongoose";
 
-const MembershipSchema = new mongoose.Schema({
-  fullName: {
-    type: String,
-    required: true,
-    trim: true,
+const userSchema = new mongoose.Schema({
+  fullName: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  phone: { type: String, required: true },
+  membership: {
+    title: { type: String, required: true },
+    description: { type: String },
+    price: { type: Number, required: true },
+    benefits: { type: [String] },
+    joinedAt: { type: Date, default: Date.now }
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-  },
-  phone: {
-    type: String,
-    required: true,
-  },
-  amountPaid: {
-    type: Number,
-    required: true,
-  },
-  paymentStatus: {
-    type: String,
-    enum: ["Pending", "Completed", "Failed"],
-    default: "Pending",
-  },
-  khaltiToken: {
-    type: String,
-    required: true,
-  },
-  transactionId: {
-    type: String,
-    default: null,
-  },
-  membershipType: {
-    type: String,
-    required: true,
-  },
-  purchaseDate: {
-    type: Date,
-    default: Date.now,
-  },
+  transactions: [
+    {
+      transactionId: { type: String, required: true, unique: true },
+      amount: { type: Number, required: true }, // Store in paisa (Khalti format)
+      status: { type: String, enum: ["Pending", "Completed", "Failed"], default: "Pending" },
+      paymentMethod: { type: String, default: "Khalti" },
+      createdAt: { type: Date, default: Date.now }
+    }
+  ],
+  createdAt: { type: Date, default: Date.now }
 });
 
-// Check if the model already exists before defining
-export default mongoose.models.Membership || mongoose.model("Membership", MembershipSchema);
+export default mongoose.model("User", userSchema);
